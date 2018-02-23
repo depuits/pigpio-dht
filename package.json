@@ -1,0 +1,30 @@
+{
+  "name": "pigpio-dht",
+  "version": "1.0.0",
+  "description": "DHT implementation using node.js and pigpio.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depuits/pigpio-dht.git"
+  },
+  "keywords": [
+    "DHT",
+    "DHT22",
+    "pigpio"
+  ],
+  "author": "depuits",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/depuits/pigpio-dht/issues"
+  },
+  "homepage": "https://github.com/depuits/pigpio-dht#readme",
+  "devDependencies": {
+    "pigpio-mock": "0.0.1"
+  },
+  "dependencies": {
+    "pigpio": "^0.6.4"
+  }
+}
