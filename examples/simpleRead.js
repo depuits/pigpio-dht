@@ -1,6 +1,6 @@
 const dht = require('../');
 
-const dataPin = 5;
+const dataPin = 2;
 const sensor = dht(dataPin);
 
 setInterval(() => { 

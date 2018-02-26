@@ -4,7 +4,7 @@ const eventEmitter = require('events').EventEmitter;
 
 module.exports = function(pin, type) {
 	const dht = Object.create(new eventEmitter());
-	const gpio = new Gpio(pin, { mode: Gpio.OUTPUT, pullUpDown: Gpio.PUD_OFF };
+	const gpio = new Gpio(pin, { mode: Gpio.OUTPUT, pullUpDown: Gpio.PUD_OFF });
 
 	dht.reading = false;
 
@@ -22,12 +22,12 @@ module.exports = function(pin, type) {
 			// cancel out if we are already reading
 			return false;
 		}
-		dht.emmit('start');
+		dht.emit('start');
 		// Trigger a new relative humidity and temperature reading.
 		// write low for 18 ms
 		gpio.digitalWrite(0);
 		// after that let the line go high and start reading
-		setTimeout(() => { 
+		setTimeout(() => {
 			// reset all values
 			bits = -2; // initialized at -2 because the first 2 lows are the ack
 			rhumHigh = 0;
@@ -47,7 +47,7 @@ module.exports = function(pin, type) {
 		dht.reading = false;
 		gpio.disableAlert();
 		gpio.mode(Gpio.OUTPUT);
-		dht.emmit('end');
+		dht.emit('end');
 	}
 
 	gpio.on('alert', (level, tick) => {
@@ -57,7 +57,7 @@ module.exports = function(pin, type) {
 		// bits are only accumulated on the low level
 		if (level == 0) {
 			let diff = (tick >> 0) - (lastHighTick >> 0);
-			
+
 			// Edge length determines if bit is 1 or 0.
 			let val = 0;
 			// low bit is between 26 and 28 µs
@@ -75,13 +75,13 @@ module.exports = function(pin, type) {
 				// we don't need to do anything with these
 			} else if (bits < 8) {
 				// in humidity high byte
-				rhumHigh = (rhumHigh << 1) + val;				
+				rhumHigh = (rhumHigh << 1) + val;
 			} else if (bits < 16) {
 				// in humidity low byte
-				rhumLow = (rhumLow << 1) + val;				
+				rhumLow = (rhumLow << 1) + val;
 			} else if (bits < 24) {
 				// in temp high byte
-				tempHigh = (tempHigh << 1) + val;				
+				tempHigh = (tempHigh << 1) + val;
 			} else if (bits < 32) {
 				// in temp low byte
 				tempLow = (tempLow << 1) + val;
@@ -103,10 +103,10 @@ module.exports = function(pin, type) {
 						let mult = (tempHigh & 128) ? -0.1 : 0.1;
 						tempHigh = tempHigh & 127; // strip the sign bit
 						let temp = ((tempHigh << 8) + tempLow) * mult;
-						
+
 						dht.emit('result', { temperature: temp, humidity: rhum });
 					} else {
-						dht.emmit('badChecksum');
+						dht.emit('badChecksum');
 					}
 				}
 			}
