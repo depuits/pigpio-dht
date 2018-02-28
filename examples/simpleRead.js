@@ -1,3 +1,4 @@
+'use strict';
 const dht = require('../');
 
 const dataPin = 2;
