@@ -1,6 +1,6 @@
 # pigpio-dht
 
-Dht22 control using node.js and pigpio.
+Dht sensor control using node.js and pigpio. Supported sensors are DHT11, DHT22 and AM2302.
 
 ## Installation
 
@@ -11,9 +11,22 @@ Dht22 control using node.js and pigpio.
 
 ```javascript
 const dht = require('dht');
+const sensor = dht(dataPin, dhtType);
+```
+
+| Sensor          | dhtType |
+|-----------------|:----------------:|
+| DHT11           | 11               |
+| DHT22 or AM2302 | 22               |
+
+### Example
+
+```javascript
+const dht = require('dht');
 
 const dataPin = 5;
-const sensor = dht(dataPin);
+const dhtType = 22; //optional
+const sensor = dht(dataPin, dhtType);
 
 setInterval(() => { 
 	sensor.read();
@@ -29,22 +42,28 @@ sensor.on('badChecksum', () => {
 });
 ```
 
+### Methods
+#### `read()`
+
+Start a new reading of the sensor. This can't be called more then once every second for the DHT11 sensor or once every 2 seconds for the DHT22 sensor. 
+
 ### Events
 
-#### start
+#### `start`
 
 Emitted when starting to read a value.
 
-#### end
+#### `end`
 
-Emitted when the reading stops. This because it was complete, an error occured or anything else.
+Emitted when the reading stops. This because it was complete, an error occurred or anything else.
 
-#### result
+#### `result`
 
 - result object containing temperature and humidity
+
 Emitted when the reading was completed successful.
 
-#### badChecksum
+#### `badChecksum`
 
 Emitted when finished reading but the checksum was invalid.
 

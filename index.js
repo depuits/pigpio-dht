@@ -17,6 +17,9 @@ module.exports = function(pin, type) {
 	var tempLow = 0;
 	var checksum = 0;
 
+	// default type is dht22
+	type = type || 22;
+
 	function startReading() {
 		if (dht.reading) {
 			// cancel out if we are already reading
@@ -48,6 +51,23 @@ module.exports = function(pin, type) {
 		gpio.disableAlert();
 		gpio.mode(Gpio.OUTPUT);
 		dht.emit('end');
+	}
+
+	function interpretDht11() {
+		let rhum = rhumHigh;
+		let temp = tempHigh;
+
+		return { temperature: temp, humidity: rhum };
+	}
+	function interpretDht22() {
+		let rhum = ((rhumHigh << 8) + rhumLow) * 0.1;
+
+		// check the temperature sign
+		let mult = (tempHigh & 128) ? -0.1 : 0.1;
+		tempHigh = tempHigh & 127; // strip the sign bit
+		let temp = ((tempHigh << 8) + tempLow) * mult;
+
+		return { temperature: temp, humidity: rhum };
 	}
 
 	gpio.on('alert', (level, tick) => {
@@ -97,14 +117,9 @@ module.exports = function(pin, type) {
 
 					// Is checksum ok?
 					if ((total & 255) == checksum) {
-						let rhum = ((rhumHigh << 8) + rhumLow) * 0.1;
+						let res = (type == 11) ? interpretDht11() ? interpretDht22();
 
-						// check the temperature sign
-						let mult = (tempHigh & 128) ? -0.1 : 0.1;
-						tempHigh = tempHigh & 127; // strip the sign bit
-						let temp = ((tempHigh << 8) + tempLow) * mult;
-
-						dht.emit('result', { temperature: temp, humidity: rhum });
+						dht.emit('result', res);
 					} else {
 						dht.emit('badChecksum');
 					}
