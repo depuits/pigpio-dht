@@ -117,7 +117,7 @@ module.exports = function(pin, type) {
 
 					// Is checksum ok?
 					if ((total & 255) == checksum) {
-						let res = (type == 11) ? interpretDht11() ? interpretDht22();
+						let res = (type == 11) ? interpretDht11() : interpretDht22();
 
 						dht.emit('result', res);
 					} else {
