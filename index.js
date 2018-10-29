@@ -1,5 +1,7 @@
 'use strict';
-const Gpio = require('pigpio').Gpio;
+
+const pigpio = require('pigpio');
+const Gpio = pigpio.Gpio;
 const eventEmitter = require('events').EventEmitter;
 
 module.exports = function(pin, type) {
