@@ -39,6 +39,10 @@ module.exports = function(pin, type) {
 			tempLow = 0;
 			checksum = 0;
 
+			// Set the pin high, particularly for when this is the second or later reading.
+			gpio.digitalWrite(1);
+			lastHighTick = pigpio.getTick();
+
 			// start reading input
 			gpio.mode(Gpio.INPUT);
 			gpio.enableAlert();
