@@ -80,7 +80,7 @@ module.exports = function(pin, type) {
 
 		// bits are only accumulated on the low level
 		if (level == 0) {
-			let diff = (tick >> 0) - (lastHighTick >> 0);
+			let diff = pigpio.tickDiff(lastHighTick, tick);
 
 			// Edge length determines if bit is 1 or 0.
 			let val = 0;
