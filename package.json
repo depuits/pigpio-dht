@@ -12,7 +12,9 @@
   },
   "keywords": [
     "DHT",
+    "DHT11",
     "DHT22",
+    "AM2302",
     "pigpio",
     "raspberry",
     "pi"
