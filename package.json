@@ -1,6 +1,6 @@
 {
   "name": "pigpio-dht",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Dht22 control using node.js and pigpio.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,9 @@
   },
   "keywords": [
     "DHT",
+    "DHT11",
     "DHT22",
+    "AM2302",
     "pigpio",
     "raspberry",
     "pi"
@@ -24,6 +26,6 @@
   },
   "homepage": "https://github.com/depuits/pigpio-dht#readme",
   "dependencies": {
-    "pigpio": "^0.6.4"
+    "pigpio": "^1.2.0"
   }
 }

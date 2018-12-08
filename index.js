@@ -1,5 +1,7 @@
 'use strict';
-const Gpio = require('pigpio').Gpio;
+
+const pigpio = require('pigpio');
+const Gpio = pigpio.Gpio;
 const eventEmitter = require('events').EventEmitter;
 
 module.exports = function(pin, type) {
@@ -39,6 +41,10 @@ module.exports = function(pin, type) {
 			tempLow = 0;
 			checksum = 0;
 
+			// Set the pin high, particularly for when this is the second or later reading.
+			gpio.digitalWrite(1);
+			lastHighTick = pigpio.getTick();
+
 			// start reading input
 			gpio.mode(Gpio.INPUT);
 			gpio.enableAlert();
@@ -76,7 +82,7 @@ module.exports = function(pin, type) {
 
 		// bits are only accumulated on the low level
 		if (level == 0) {
-			let diff = (tick >> 0) - (lastHighTick >> 0);
+			let diff = pigpio.tickDiff(lastHighTick, tick);
 
 			// Edge length determines if bit is 1 or 0.
 			let val = 0;
