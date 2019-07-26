@@ -10,7 +10,7 @@ Dht sensor control using node.js and pigpio. Supported sensors are DHT11, DHT22 
 ## Usage
 
 ```javascript
-const dht = require('dht');
+const dht = require('pigpio-dht');
 const sensor = dht(dataPin, dhtType);
 ```
 
@@ -22,7 +22,7 @@ const sensor = dht(dataPin, dhtType);
 ### Example
 
 ```javascript
-const dht = require('dht');
+const dht = require('pigpio-dht');
 
 const dataPin = 5;
 const dhtType = 22; //optional
